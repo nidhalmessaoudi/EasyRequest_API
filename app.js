@@ -1,8 +1,13 @@
 const express = require("express");
+const cors = require("cors");
 
 const requestRoutes = require("./routes/requestRoutes/index.js");
 
 const app = express();
+
+app.use(cors({
+    origin: process.env.CLIENT
+}));
 
 app.use(express.json({ limit: "5kb" }));
 
