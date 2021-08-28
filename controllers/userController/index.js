@@ -1,4 +1,4 @@
-const User = require("User");
+const User = require("../../models/User/index");
 
 async function findUser(ip, getIt) {
   const user = await User.find({ ip });

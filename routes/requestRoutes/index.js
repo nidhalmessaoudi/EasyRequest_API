@@ -1,6 +1,6 @@
 const router = require("express").Router();
-const requestController = require("./controllers/requestController");
-const userController = require("./controllers/userController");
+const requestController = require("../../controllers/requestController/index");
+const userController = require("../../controllers/userController/index");
 
 router
   .route("/")

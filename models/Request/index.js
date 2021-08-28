@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const User = require("../User/index.js");
+const User = require("../User/index");
 
 const requestSchema = new mongoose.Schema({
   isSuccessful: {
@@ -23,7 +23,7 @@ requestSchema.pre("findOne", (next) => {
   next();
 });
 
-requestSchema.pre("save", (next) => {
+requestSchema.pre("save", async (next) => {
   const user = await User.findOne({ _id: this.user });
   user.numberOfRequests.all += 1;
   this.isSuccessful

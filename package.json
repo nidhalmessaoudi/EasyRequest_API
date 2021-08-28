@@ -18,6 +18,9 @@
   ],
   "author": "Nidhal Messaoudi",
   "license": "ISC",
+  "engines": {
+    "node": "14.17.4"
+  },
   "bugs": {
     "url": "https://github.com/nidhalmessaoudi/EasyRequest_API/issues"
   },
