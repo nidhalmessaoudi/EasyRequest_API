@@ -1,0 +1,30 @@
+{
+  "name": "easyrequest_api",
+  "version": "1.0.0",
+  "description": "EasyRequest API for monitoring requests",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nidhalmessaoudi/EasyRequest_API.git"
+  },
+  "keywords": [
+    "easyrequest",
+    "api",
+    "http",
+    "fetch"
+  ],
+  "author": "Nidhal Messaoudi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nidhalmessaoudi/EasyRequest_API/issues"
+  },
+  "homepage": "https://github.com/nidhalmessaoudi/EasyRequest_API#readme",
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "mongoose": "^6.0.2"
+  }
+}
