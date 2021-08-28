@@ -5,14 +5,16 @@ const requestRoutes = require("./routes/requestRoutes/index.js");
 
 const app = express();
 
+const client = process.env.CLIENT;
+
 app.use(cors({
-    origin: process.env.CLIENT
+    origin: client
 }));
 
 app.use(express.json({ limit: "5kb" }));
 
 app.get("/", (req, res) => {
-  res.redirect("https://easyrequest.netlify.app");
+  res.redirect(client);
 });
 
 app.use("/api/v1/requests", requestRoutes);
