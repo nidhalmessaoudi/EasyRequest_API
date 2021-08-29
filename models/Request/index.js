@@ -2,25 +2,28 @@ const mongoose = require("mongoose");
 
 const User = require("../User/index");
 
-const requestSchema = new mongoose.Schema({
-  isSuccessful: {
-    type: Boolean,
-    required: true,
+const requestSchema = new mongoose.Schema(
+  {
+    isSuccessful: {
+      type: Boolean,
+      required: true,
+    },
+    user: {
+      type: mongoose.Schema.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    statusCode: Number,
+    requestTime: Number,
+    requestSize: Number,
+    message: String,
   },
-  user: {
-    type: mongoose.Schema.ObjectId,
-    ref: "User",
-    required: true,
-  },
-  statusCode: Number,
-  responseTime: Number,
-  responseSize: Number,
-  message: String,
-}, {
-  timestamps: true,
-  toJSON: { virtuals: true },
-  toObject: { virtuals: true },
-});
+  {
+    timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
+  }
+);
 
 requestSchema.pre("findOne", function (next) {
   this.populate("user");
