@@ -14,8 +14,8 @@ const requestSchema = new mongoose.Schema(
       required: true,
     },
     statusCode: Number,
-    requestTime: Number,
-    requestSize: Number,
+    responseTime: Number,
+    responeSize: Number,
     message: String,
   },
   {
