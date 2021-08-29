@@ -16,19 +16,25 @@ const requestSchema = new mongoose.Schema({
   responseTime: Number,
   responseSize: Number,
   message: String,
+}, {
+  timestamps: true,
+  toJSON: { virtuals: true },
+  toObject: { virtuals: true },
 });
 
-requestSchema.pre("findOne", (next) => {
+requestSchema.pre("findOne", function (next) {
   this.populate("user");
   next();
 });
 
-requestSchema.pre("save", async (next) => {
+requestSchema.pre("save", async function (next) {
   const user = await User.findOne({ _id: this.user });
+  console.log(user);
   user.numberOfRequests.all += 1;
   this.isSuccessful
     ? (user.numberOfRequests.successful += 1)
     : (user.numberOfRequests.failed += 1);
+  user.save();
   next();
 });
 

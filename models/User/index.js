@@ -40,7 +40,7 @@ userSchema.virtual("failedRequests", {
   localField: "_id",
 });
 
-userSchema.pre("findOne", (next) => {
+userSchema.pre("findOne", function (next) {
   this.populate("successfulRequests failedRequests");
   next();
 });

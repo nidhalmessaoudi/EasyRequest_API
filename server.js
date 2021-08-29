@@ -9,10 +9,10 @@ const app = require("./app");
       useNewUrlParser: true,
       useUnifiedTopology: true,
     })
-    .then(() => {
+    .then(function () {
       console.log("Connected to DB!");
       const PORT = process.env.PORT || 8000;
-      app.listen(PORT, () => console.log(`Server started at port ${PORT}`));
+      app.listen(PORT, function () { console.log(`Server started at port ${PORT}`); });
     })
-    .catch((err) => console.log(err));
+    .catch(function (err) { console.log(err); });
 })();

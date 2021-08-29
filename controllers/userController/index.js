@@ -1,25 +1,21 @@
 const User = require("../../models/User/index");
 
-async function findUser(ip, getIt) {
-  const user = await User.find({ ip });
-  if (user) {
-    return getIt ? user : null;
-  } else {
-    return getIt ? true : false;
-  }
+async function findUser(ip) {
+  return await User.findOne({ ip });
 }
 
 async function createUser(user) {
   return await User.create(user);
 }
 
-exports.attachUser = async (req, res, next) => {
+exports.attachUser = async function (req, res, next) {
   const ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
-  const userIsFound = await findUser(ip, false);
-  req.body.user = ip;
+  const userIsFound = await findUser(ip);
   if (userIsFound) {
-    next();
+    req.body.user = userIsFound._id;
+  } else {
+    const user = await createUser({ ip });
+    req.body.user = user._id;
   }
-  await createUser({ ip });
   next();
 };
