@@ -1,5 +1,16 @@
 <%- include("includes/head") %>
 <body>
-  <h2>Successfully logged In!!</h2>
+  <div>
+    <h2>Hello, Nidhal!</h2>
+    <% for (const stat in stats) { %>
+      <span><%= stat %>: <%= stats[stat]%></span>
+    <% } %>  
+    <ul>
+    <% requests.forEach(request => { %>
+      <% const requestState = request.isSuccessful ? "Successful request" : "Failed request" %>  
+      <li><a href="/admin/dashboard/requests/<%= request._id %>"><%= request.user.ip %>: <%=  requestState %> </a></li>
+    <% }) %>
+    </ul>
+  </div>
 </body>
 </html>

@@ -25,7 +25,7 @@ const requestSchema = new mongoose.Schema(
   }
 );
 
-requestSchema.pre("findOne", function (next) {
+requestSchema.pre(/find/, function (next) {
   this.populate("user");
   next();
 });

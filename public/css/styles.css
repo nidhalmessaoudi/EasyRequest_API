@@ -1,5 +1,31 @@
-body {
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+h1 {
   text-align: center;
+}
+
+:is(h1, h2, h3, h4, h5, h6) {
+  margin: 1.5rem 0;
+}
+
+div {
+  margin: 2rem;
+}
+
+ul {
+  margin: 1.5rem 3rem;
+}
+
+li {
+  margin-bottom: 0.7rem;
+}
+
+span {
+  margin: 0 0.7rem;
 }
 
 div.form {
@@ -8,6 +34,7 @@ div.form {
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
+  margin: 0;
 }
 
 form {
