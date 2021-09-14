@@ -1,4 +1,5 @@
 const passport = require("passport");
+const ta = require("time-ago");
 
 const Request = require("../../models/Request/index");
 
@@ -21,6 +22,7 @@ exports.getLogin = function (req, res) {
   res.render("login", {
     title: "Admin Login | Easy Request",
     error: errorFlash.length > 0 ? errorFlash[0] : undefined,
+    loggedIn: false,
   });
 };
 
@@ -31,19 +33,37 @@ exports.postLogin = passport.authenticate("local", {
 });
 
 exports.getDashboard = async function (req, res) {
-  const requests = await getRequests(10);
+  try {
+    const page = +req.query.p || null;
 
-  const stats = {
-    totalRequests: await Request.countDocuments(),
-    successfulRequests: await Request.countDocuments({ isSuccessful: true }),
-    failedRequests: await Request.countDocuments({ isSuccessful: false }),
-  };
+    const stats = {
+      totalRequests: await Request.countDocuments(),
+      successfulRequests: await Request.countDocuments({ isSuccessful: true }),
+      failedRequests: await Request.countDocuments({ isSuccessful: false }),
+    };
 
-  res.render("dashboard", {
-    title: "Admin Dashboard | Easy Request",
-    requests,
-    stats,
-  });
+    const { skippedRequests, prevPage, nextPage } = paginateRequests(
+      page,
+      stats.totalRequests
+    );
+
+    const requests = await getRequests(10, skippedRequests);
+
+    requests.forEach((request) => {
+      request.since = ta.ago(request.createdAt);
+    });
+
+    res.render("dashboard", {
+      title: "Admin Dashboard | Easy Request",
+      requests,
+      stats,
+      prevPage,
+      nextPage,
+      loggedIn: true,
+    });
+  } catch (err) {
+    console.error(err);
+  }
 };
 
 exports.getRequest = async function (req, res) {
@@ -69,7 +89,7 @@ exports.getRequest = async function (req, res) {
           };
           continue;
         case "createdAt":
-          request[prop] = getDate(requestObj[prop].toISOString());
+          request[prop] = getDate(requestObj[prop]);
           continue;
         case "responseTime":
           request[prop] = `${requestObj[prop]}ms`;
@@ -92,6 +112,7 @@ exports.getRequest = async function (req, res) {
       title: "Admin Dashboard | Easy Request",
       request,
       error: undefined,
+      loggedIn: true,
     });
   } catch (err) {
     console.log(err);
@@ -100,17 +121,30 @@ exports.getRequest = async function (req, res) {
       title: "Admin Dashboard | Easy Request",
       request: undefined,
       error,
+      loggedIn: true,
     });
   }
 };
 
-async function getRequests(nRequests) {
-  return await Request.find().limit(nRequests);
+exports.getLogout = function (req, res) {
+  req.logout();
+  res.redirect("/admin/login");
+};
+
+async function getRequests(nRequests, skip) {
+  return await Request.find().limit(nRequests).skip(skip).sort("createdAt");
 }
 
 function getDate(dateStr) {
   const date = new Date(dateStr);
-  return `${date.getDay() + 1}/${date.getMonth() + 1}/${date.getFullYear()}`;
+  let month = "" + (date.getMonth() + 1);
+  let day = "" + date.getDate();
+  let year = date.getFullYear();
+
+  if (month.length < 2) month = "0" + month;
+  if (day.length < 2) day = "0" + day;
+
+  return `${[year, month, day].join("/")}, ${ta.ago(dateStr)}`;
 }
 
 function cleanHTMLStr(str) {
@@ -129,4 +163,25 @@ function cleanHTMLStr(str) {
     return newStr;
   }
   return newStr.replace(regexResult[0], regexResult[1].trim());
+}
+
+function paginateRequests(page, total) {
+  let skippedRequests = 0;
+  let prevPage = 0;
+  let nextPage = total > 10 ? 2 : 0;
+  if (page > 0) {
+    skippedRequests = (page - 1) * 10;
+    prevPage = page - 1;
+    if (skippedRequests >= totalRequests) {
+      nextPage = 0;
+    } else {
+      nextPage = page + 1;
+    }
+  }
+
+  return {
+    skippedRequests,
+    prevPage,
+    nextPage,
+  };
 }

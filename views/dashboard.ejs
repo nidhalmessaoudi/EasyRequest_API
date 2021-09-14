@@ -1,6 +1,7 @@
 <%- include("includes/head") %>
 <body>
-  <div>
+  <%- include("includes/navbar") %> 
+  <div class="main">
     <h2>Hello, Nidhal!</h2>
     <% for (const stat in stats) { %>
       <span><%= stat %>: <%= stats[stat]%></span>
@@ -8,9 +9,17 @@
     <ul>
     <% requests.forEach(request => { %>
       <% const requestState = request.isSuccessful ? "Successful request" : "Failed request" %>  
-      <li><a href="/admin/dashboard/requests/<%= request._id %>"><%= request.user.ip %>: <%=  requestState %> </a></li>
+      <li><a class="request-anchor" href="/admin/dashboard/requests/<%= request._id %>"><%= request.user.ip %>: <%=  requestState %></a><span class="sent-since"><%= request.since %></span></li>
     <% }) %>
     </ul>
+    <div>
+      <% if (prevPage) { %>
+        <a href="/admin/dashboard?p=<%= prevPage %>"><button class="btn pagination-btn">&leftarrow; Prev</button></a>
+      <% } %>
+      <% if (nextPage) { %>
+        <a href="/admin/dashboard?p=<%= nextPage %>"><button class="btn pagination-btn">&rightarrow; Next</button></a>
+      <% } %>
+    </div>
   </div>
 </body>
 </html>

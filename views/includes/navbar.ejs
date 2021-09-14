@@ -1,0 +1,15 @@
+<nav class="navbar">
+  <div class="nav-container">
+    <h2>
+      <a href="/admin/dashboard"
+        ><span class="brand">Easy Request:</span
+        ><span class="sub-brand">Dashboard</span></a
+      >
+    </h2>
+  </div>
+  <% if (loggedIn) { %>
+  <div class="nav-container">
+    <a href="/admin/logout">Log Out</a>
+  </div>
+  <% } %>
+</nav>

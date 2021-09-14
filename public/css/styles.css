@@ -1,15 +1,37 @@
+:root {
+  --main-color: #0d6efd;
+  --second-color: #2c3e50;
+  --white-color: #ffffff;
+  --grey-color: #eeeeee;
+  --dark-color: #18191a;
+}
+
 * {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
 }
 
+body {
+  font-family: -apple-system, BlinkMacSystemFont, ".SFNSText-Regular",
+    sans-serif;
+}
+
 h1 {
   text-align: center;
+  margin-top: 6rem;
+}
+
+a,
+a:link,
+a:visited {
+  text-decoration: none;
+  color: inherit;
 }
 
 :is(h1, h2, h3, h4, h5, h6) {
   margin: 1.5rem 0;
+  color: var(--second-color);
 }
 
 div {
@@ -28,23 +50,107 @@ span {
   margin: 0 0.7rem;
 }
 
-div.form {
-  position: absolute;
-  top: 40%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+strong {
+  color: var(--second-color);
+}
+
+.main {
+  margin-top: 7rem;
+  padding: 0 4rem;
+}
+
+.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 5rem;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
+  background-color: var(--white-color);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+}
+
+.nav-container {
+  padding: 0 3rem;
+}
+
+.brand {
+  color: var(--main-color);
+}
+
+.sub-brand {
+  color: var(--second-color);
+}
+
+.btn {
+  background-color: var(--main-color);
+  color: var(--white-color);
+  border: 1px solid var(--main-color);
+  cursor: pointer;
+}
+
+/* login specific styles */
+
+.login {
+  margin-top: 7rem;
   text-align: center;
-  margin: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
-form {
-  display: inline-block;
-  margin: 0 auto;
+.login-form {
+  padding: 2rem 5rem;
+  border-radius: 5px;
+  width: 26rem;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
-input {
-  border-radius: 0;
-  padding: 0.5rem;
+.login-text {
+  color: var(--second-color);
+}
+
+.login-input {
+  background-color: var(--white-color);
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  font-size: 1rem;
+}
+
+.login-input,
+.login-btn {
   display: block;
-  margin: 0.5rem auto;
+  margin: 1rem auto;
+  padding: 0.8rem 1.2rem;
+  border-radius: 2px;
+  width: 100%;
+}
+
+.login-input:focus,
+.login-btn:focus {
+  outline: 0;
+  border: 1px solid var(--main-color);
+}
+
+/* Dashboard specific styles */
+
+.request-anchor {
+  text-decoration: underline !important;
+}
+
+.sent-since {
+  color: var(--dark-color);
+  font-size: 0.9rem;
+  margin-left: 0.7rem;
+}
+
+.pagination-btn {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+}
+
+.request-sender {
+  color: var(--dark-color);
 }

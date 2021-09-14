@@ -1,16 +1,22 @@
 <%- include("includes/head") %>
 <body>
-  <% if (error) { %>
-  <h1><%= error %></h1>
-  <% } else { %>
-  <div>
-    <h3>Request was sent by user with ip: <b><%= request.user.ip %></b></h3>
-    <ul>
-      <% for (const prop in request) { %> <% if (prop === "_id" || prop ===
-      "user") continue; %>
-      <li><%= prop %>: <b><%= request[prop] %></b></li>
-      <% } %>
-    </ul>
+  <%- include("includes/navbar") %>
+  <div class="main">
+    <% if (error) { %>
+    <h1><%= error %></h1>
+    <% } else { %>
+    <div>
+      <h3 class="request-sender">
+        Request was sent by user with ip:
+        <strong><%= request.user.ip %></strong>
+      </h3>
+      <ul>
+        <% for (const prop in request) { %> <% if (prop === "_id" || prop ===
+        "user") continue; %>
+        <li><%= prop %>: <strong><%= request[prop] %></strong></li>
+        <% } %>
+      </ul>
+    </div>
+    <% } %>
   </div>
-  <% } %>
 </body>

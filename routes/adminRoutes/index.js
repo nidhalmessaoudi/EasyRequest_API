@@ -11,6 +11,8 @@ router
 
 router.use(adminController.checkIfAuthenticated);
 
+router.get("/logout", adminController.getLogout);
+
 router.get("/dashboard", adminController.getDashboard);
 
 router.get("/dashboard/requests/:id", adminController.getRequest);

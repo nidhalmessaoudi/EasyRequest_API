@@ -77,6 +77,7 @@ app.use("/admin", adminRoutes);
 app.use(function (req, res) {
   res.status(404).render("notFound", {
     title: "Page Not Found",
+    loggedIn: req.isAuthenticated() ? true : false,
   });
 });
 
