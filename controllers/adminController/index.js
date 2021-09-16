@@ -34,7 +34,7 @@ exports.postLogin = passport.authenticate("local", {
 
 exports.getDashboard = async function (req, res) {
   try {
-    const page = +req.query.p || null;
+    let page = +req.query.p || null;
 
     const stats = {
       totalRequests: await Request.countDocuments(),
@@ -42,9 +42,21 @@ exports.getDashboard = async function (req, res) {
       failedRequests: await Request.countDocuments({ isSuccessful: false }),
     };
 
+    let availablePages = stats.totalRequests / 10;
+
+    if (stats.totalRequests % 10 > 0) {
+      availablePages++;
+    }
+
+    if (!page || page > availablePages || page <= 0) {
+      res.redirect("/admin/dashboard?p=1");
+      return;
+    }
+
     const { skippedRequests, prevPage, nextPage } = paginateRequests(
       page,
-      stats.totalRequests
+      stats.totalRequests,
+      res
     );
 
     const requests = await getRequests(10, skippedRequests);
@@ -166,18 +178,9 @@ function cleanHTMLStr(str) {
 }
 
 function paginateRequests(page, total) {
-  let skippedRequests = 0;
-  let prevPage = 0;
-  let nextPage = total > 10 ? 2 : 0;
-  if (page > 0) {
-    skippedRequests = (page - 1) * 10;
-    prevPage = page - 1;
-    if (skippedRequests >= totalRequests) {
-      nextPage = 0;
-    } else {
-      nextPage = page + 1;
-    }
-  }
+  const skippedRequests = page > 1 ? (page - 1) * 10 : 0;
+  const prevPage = page > 1 ? page - 1 : 0;
+  const nextPage = skippedRequests + 10 < total ? page + 1 : 0;
 
   return {
     skippedRequests,
